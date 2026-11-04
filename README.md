@@ -1,5 +1,9 @@
 # CaptureScope
 
+Completely AI generated. I prompted this front-end project to use on OT/ICS assignments. I could not find much useful visualization tools tailored for my needs. Or they asked money for their crappy app. So this is the outcome. Use as you wish.
+
+src folder is only there to show you how AI developed the project. **CaptureScope.html** is the single file version.
+
 A single-file, dependency-free, offline pcap/pcapng topology viewer for IT and OT/ICS networks.
 Drop a capture in the browser and get an interactive host graph with vendor resolution,
 OT protocol decoding in plain English, anomaly findings, and PNG/PDF/session export.
