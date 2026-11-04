@@ -1,0 +1,90 @@
+<header>
+  <div class="brand">
+    <span class="scope mono">Capture<b>Scope</b></span>
+    <span class="tag">pcap topology</span>
+  </div>
+  <div class="spacer"></div>
+  <div class="stat" id="hdrstat"></div>
+  <div class="btns">
+    <button id="btn-open" title="Open another capture">Open</button>
+    <button id="btn-save" disabled title="Save this view as a session file you can reopen later">Save</button>
+    <button id="btn-png" disabled title="Export visible graph as a PNG image">PNG</button>
+    <button id="btn-pdf" disabled title="Export a full report as PDF">PDF</button>
+    <button id="btn-panel" title="Show/hide the side panel">Panel</button>
+  </div>
+</header>
+
+<div class="stage">
+  <div id="graphwrap">
+    <canvas id="graph"></canvas>
+
+    <div class="legend" id="legend"></div>
+
+    <div class="toolbar">
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="find host / ip / mac" spellcheck="false" autocomplete="off">
+      </label>
+      <select id="groupsel" title="Draw bubbles around hosts that share this" style="background:var(--panel);border:1px solid var(--line2);border-radius:7px;color:var(--ink);font-size:12px;padding:7px 8px;font-family:var(--fontui)">
+        <option value="none">No grouping</option>
+        <option value="subnet">Group by subnet</option>
+        <option value="role">Group by role</option>
+        <option value="vendor">Group by vendor</option>
+      </select>
+      <button id="btn-fit" title="Zoom and center so every host is visible">Fit view</button>
+      <button id="btn-relayout" title="Re-run the physics layout from scratch (pinned nodes stay put)">Re-arrange</button>
+      <button id="btn-deoverlap" title="Nudge apart any nodes that overlap, keeping current positions">De-overlap</button>
+      <button id="btn-ports" title="Show/hide port labels on the links">Ports: on</button>
+      <button id="btn-labels" title="Cycle host labels: all / hubs only / off">Labels: all</button>
+      <button id="btn-phys" title="Show/hide physical links discovered from LLDP/CDP (cabling)">Cabling: on</button>
+    </div>
+
+    <div class="zoomctl">
+      <button id="zin" title="Zoom in">+</button>
+      <button id="zout" title="Zoom out">−</button>
+    </div>
+
+    <div id="multibar" style="display:none;position:absolute;left:50%;transform:translateX(-50%);bottom:14px;z-index:16;
+      background:var(--panel);border:1px solid var(--line2);border-radius:10px;padding:7px 10px;gap:9px;align-items:center;box-shadow:0 4px 18px rgba(0,0,0,.4)">
+      <span id="multi-count" class="mono" style="font-size:12px;color:var(--accent)"></span>
+      <button id="multi-pin" title="Pin selected nodes so Re-arrange won't move them">Pin</button>
+      <button id="multi-unpin" title="Unpin selected">Unpin</button>
+      <button id="multi-clear" title="Clear selection">Clear</button>
+      <span style="font-size:11px;color:var(--ink3)">shift-drag to box-select · ctrl-click to add</span>
+    </div>
+
+    <div class="expmenu" id="expmenu" style="display:none"></div>
+
+    <div id="drop">
+      <div class="card">
+        <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><rect x="4" y="17" width="16" height="4" rx="1"/>
+        </svg>
+        <div class="big mono">drop a <b>.pcap</b> / <b>.pcapng</b></div>
+        <div class="sub">everything runs in your browser — the file never leaves this machine</div>
+        <button class="primary" id="btn-choose">Choose file…</button>
+        <input type="file" id="filein" accept=".pcap,.pcapng,.cap,.dump,.json,.cscope">
+        <div class="hint">
+          reads Ethernet · VLAN · IPv4/6 · TCP/UDP/ICMP/ARP<br>
+          decodes <code>Modbus · EtherNet/IP · DNP3 · S7comm · OPC-UA · PROFINET · BACnet · IEC-104 · MMS · HTTP · DNS · TLS · MQTT</code><br>
+          flags malformed frames, scans, unknown OT ports &amp; plaintext control traffic
+        </div>
+      </div>
+    </div>
+
+    <div id="progress"><div class="box"><div class="lbl" id="prog-lbl">parsing…</div><div class="bar"><i id="prog-bar"></i></div></div></div>
+  </div>
+
+  <aside id="aside">
+    <div class="aside-tabs">
+      <button data-tab="overview" class="on">Overview</button>
+      <button data-tab="assets">Assets</button>
+      <button data-tab="protocols">Protocols</button>
+      <button data-tab="alerts">Findings <span id="alert-badge"></span></button>
+      <button data-tab="detail">Detail</button>
+    </div>
+    <div class="aside-body" id="aside-body"></div>
+  </aside>
+</div>
+
+<div id="tip"></div>

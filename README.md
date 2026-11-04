@@ -1,5 +1,4 @@
 # CaptureScope
-AI generated pcap visualization
 
 A single-file, dependency-free, offline pcap/pcapng topology viewer for IT and OT/ICS networks.
 Drop a capture in the browser and get an interactive host graph with vendor resolution,
